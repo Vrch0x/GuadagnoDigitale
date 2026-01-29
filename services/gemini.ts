@@ -8,19 +8,28 @@ export const generateEarningStrategy = async (
   targetDaily: number
 ): Promise<Strategy> => {
   
-  const prompt = `
-    Agisci come un esperto consulente di carriera digitale per il mercato italiano.
-    L'utente vuole guadagnare circa ${targetDaily}€ al giorno (o circa ${Math.round(targetDaily/24)}€ all'ora se h24, oppure ${Math.round(targetDaily/8)}€/h lavorativi) lavorando SOLO online dall'Italia.
-    
-    Abilità dell'utente: ${skills || "Nessuna specifica (generico)"}.
+  const isPassiveGoal = targetDaily >= 200; // Heuristic for high daily goals implying scale or passive
 
-    Fornisci una strategia dettagliata, realistica e attuabile.
-    Evita truffe, scommesse o metodi illegali.
-    Concentrati su Freelancing, Gig Economy, Content Creation, Remote Working, Affiliate Marketing seri.
-    Includi nomi di piattaforme reali accessibili dall'Italia (es. Fiverr, Upwork, AddLance, Vinted, Etsy, ecc).
+  const prompt = `
+    Sei "VirtualArchitect", un consulente strategico d'élite per l'economia digitale italiana.
     
-    Struttura la risposta in Markdown. Usa titoli, liste puntate e grassetto per enfasi.
-    Sii motivante ma pragmatico.
+    OBIETTIVO UTENTE:
+    Guadagnare circa ${targetDaily}€ al giorno.
+    Se l'utente punta a cifre alte (es. 240€/giorno), considera che questo equivale a 10€/ora per 24 ore (Reddito Passivo/Automatico) OPPURE 30€/ora per una giornata lavorativa di 8 ore.
+    
+    COMPETENZE UTENTE:
+    ${skills || "Non specificate (fornisci blueprint universale)"}.
+
+    IL TUO COMPITO:
+    Crea un "Blueprint Finanziario" dettagliato. 
+    Struttura la risposta come un progetto architettonico:
+    1. **Le Fondamenta**: Cosa serve per iniziare (P.IVA? Strumenti?).
+    2. **La Struttura (Il Metodo)**: Spiega passo passo come raggiungere i ${targetDaily}€/giorno. Se l'obiettivo è 240€, suggerisci mix di lavoro attivo + passive income (affiliate, prodotti digitali, e-commerce, investimenti automatizzati).
+    3. **I Materiali (Piattaforme)**: Fiverr, Upwork, Amazon KDP, Etsy, Trading (solo se serio), Blogging, ecc.
+    4. **Analisi Rischi/Tasse**: Breve accenno alla tassazione italiana (Regime Forfettario).
+
+    TONO DI VOCE:
+    Professionale, Diretto, Visionario ma concreto. Usa formattazione Markdown avanzata.
   `;
 
   try {
@@ -28,34 +37,33 @@ export const generateEarningStrategy = async (
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        tools: [{ googleSearch: {} }], // Use search to get current legit platforms
-        systemInstruction: "Sei un esperto finanziario italiano specializzato in guadagni online. Rispondi in italiano.",
+        tools: [{ googleSearch: {} }],
+        systemInstruction: "Sei VirtualArchitect. Rispondi in italiano con un layout strutturato e pulito.",
       }
     });
 
-    const text = response.text || "Impossibile generare una strategia al momento.";
+    const text = response.text || "Impossibile generare il blueprint al momento.";
     
-    // Extract grounding URLs if available
+    // Extract grounding URLs
     const groundingUrls = response.candidates?.[0]?.groundingMetadata?.groundingChunks
       ?.map((chunk: any) => chunk.web ? { uri: chunk.web.uri, title: chunk.web.title } : null)
       .filter((item: any) => item !== null) || [];
 
-    // Simple heuristic to determine difficulty based on text length or keywords (mock logic for UI richness)
     let difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium';
-    if (text.toLowerCase().includes('programmazione') || text.toLowerCase().includes('sviluppo')) difficulty = 'Hard';
-    if (text.toLowerCase().includes('sondaggi') || text.toLowerCase().includes('micro')) difficulty = 'Easy';
+    if (targetDaily > 100) difficulty = 'Hard';
+    if (text.toLowerCase().includes('investimenti') || text.toLowerCase().includes('business')) difficulty = 'Hard';
 
     return {
-      title: `Piano Personalizzato: Obiettivo ${targetDaily}€/giorno`,
+      title: `Blueprint VirtualArchitect: Target ${targetDaily}€`,
       content: text,
       difficulty,
       estimatedTime: "Variabile",
-      potentialEarnings: `${targetDaily}€+ / giorno`,
+      potentialEarnings: `${targetDaily}€ / giorno`,
       groundingUrls
     };
 
   } catch (error) {
     console.error("Gemini Error:", error);
-    throw new Error("Errore nella generazione della strategia. Riprova più tardi.");
+    throw new Error("Errore nei sistemi VirtualArchitect. Riprova più tardi.");
   }
 };

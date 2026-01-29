@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { generateEarningStrategy } from '../services/gemini';
 import { Strategy } from '../types';
-import { Sparkles, ArrowRight, Loader2, Link as LinkIcon, AlertTriangle } from 'lucide-react';
+import { Sparkles, ArrowRight, Loader2, Link as LinkIcon, AlertTriangle, Cpu, Ruler } from 'lucide-react';
 
 export const StrategyAdvisor: React.FC = () => {
   const [skills, setSkills] = useState('');
@@ -18,133 +18,140 @@ export const StrategyAdvisor: React.FC = () => {
       const result = await generateEarningStrategy(skills, target);
       setStrategy(result);
     } catch (err) {
-      setError("Si è verificato un errore durante la generazione della strategia. Riprova.");
+      setError("Errore nella generazione del blueprint.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-white flex items-center justify-center gap-3">
-          <Sparkles className="w-8 h-8 text-yellow-400" />
-          AI Coach Finanziario
+    <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in duration-500">
+      <div className="text-center space-y-4">
+        <h2 className="text-4xl font-display font-bold text-white flex items-center justify-center gap-3">
+          <Cpu className="w-8 h-8 text-emerald-500" />
+          Virtual Architect <span className="text-slate-600">//</span> AI
         </h2>
-        <p className="text-slate-400 max-w-lg mx-auto">
-          Descrivi le tue competenze e lascia che l'IA crei un piano personalizzato per raggiungere i tuoi 10€/ora o 240€/giorno.
+        <p className="text-slate-400 max-w-lg mx-auto font-light">
+          Definisci i parametri. L'intelligenza artificiale progetterà il blueprint per raggiungere i {target}€ giornalieri.
         </p>
       </div>
 
-      {/* Input Section */}
-      <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm shadow-xl">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              Obiettivo Giornaliero (€)
-            </label>
-            <input
-              type="number"
-              value={target}
-              onChange={(e) => setTarget(parseInt(e.target.value) || 0)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-emerald-500 outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              Le tue Competenze (Opzionale)
-            </label>
-            <textarea
-              placeholder="Es. Scrittura, Video Editing, Traduzione, Programmazione, Nessuna in particolare..."
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              className="w-full h-24 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
-            />
-          </div>
-          <button
-            onClick={handleGenerate}
-            disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Elaborazione Piano in corso...
-              </>
-            ) : (
-              <>
-                Genera Strategia <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Input Panel */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-slate-900 p-6 border border-slate-800 relative group">
+             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-600 to-emerald-900 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+             
+             <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2 font-bold">
+                  Target Giornaliero (€)
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={target}
+                    onChange={(e) => setTarget(parseInt(e.target.value) || 0)}
+                    className="w-full bg-slate-950 border border-slate-800 px-4 py-3 text-white focus:border-emerald-500 outline-none font-mono text-lg transition-colors"
+                  />
+                  <div className="absolute right-3 top-3 text-slate-600 font-mono">EUR</div>
+                </div>
+              </div>
 
-      {error && (
-        <div className="p-4 bg-red-900/30 border border-red-800 text-red-200 rounded-lg flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5" />
-          {error}
-        </div>
-      )}
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2 font-bold">
+                  Asset & Skillset
+                </label>
+                <textarea
+                  placeholder="Es. Capitale iniziale 0€, So scrivere, Inglese B2..."
+                  value={skills}
+                  onChange={(e) => setSkills(e.target.value)}
+                  className="w-full h-40 bg-slate-950 border border-slate-800 px-4 py-3 text-white focus:border-emerald-500 outline-none resize-none font-sans text-sm leading-relaxed transition-colors"
+                />
+              </div>
 
-      {/* Results Section */}
-      {strategy && (
-        <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-bottom-8 duration-700">
-          <div className="bg-slate-800/80 p-6 border-b border-slate-700 flex flex-col md:flex-row justify-between md:items-center gap-4">
-            <div>
-               <h3 className="text-2xl font-bold text-white">{strategy.title}</h3>
-               <p className="text-emerald-400 text-sm font-medium mt-1">Potenziale: {strategy.potentialEarnings}</p>
-            </div>
-            <div className="flex gap-2">
-               <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
-                 strategy.difficulty === 'Easy' ? 'bg-green-900/30 text-green-300 border-green-700' :
-                 strategy.difficulty === 'Medium' ? 'bg-yellow-900/30 text-yellow-300 border-yellow-700' :
-                 'bg-red-900/30 text-red-300 border-red-700'
-               }`}>
-                 Difficoltà: {strategy.difficulty === 'Easy' ? 'Bassa' : strategy.difficulty === 'Medium' ? 'Media' : 'Alta'}
-               </span>
+              <button
+                onClick={handleGenerate}
+                disabled={loading}
+                className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-widest text-xs transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Elaborazione...
+                  </>
+                ) : (
+                  <>
+                    Genera Blueprint <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
             </div>
           </div>
           
-          <div className="p-8 prose prose-invert prose-emerald max-w-none">
-             <ReactMarkdown
-               components={{
-                 h1: ({node, ...props}) => <h1 className="text-2xl font-bold text-white mt-6 mb-4 pb-2 border-b border-slate-700" {...props} />,
-                 h2: ({node, ...props}) => <h2 className="text-xl font-semibold text-emerald-400 mt-6 mb-3" {...props} />,
-                 h3: ({node, ...props}) => <h3 className="text-lg font-medium text-white mt-4 mb-2" {...props} />,
-                 strong: ({node, ...props}) => <strong className="text-emerald-300 font-semibold" {...props} />,
-                 ul: ({node, ...props}) => <ul className="list-disc pl-5 space-y-2 text-slate-300" {...props} />,
-                 li: ({node, ...props}) => <li className="pl-1" {...props} />,
-                 p: ({node, ...props}) => <p className="text-slate-300 leading-relaxed mb-4" {...props} />,
-               }}
-             >
-               {strategy.content}
-             </ReactMarkdown>
-          </div>
-
-          {/* Grounding Sources */}
-          {strategy.groundingUrls && strategy.groundingUrls.length > 0 && (
-            <div className="bg-slate-950/50 p-6 border-t border-slate-800">
-               <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Fonti & Link Utili</h4>
-               <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                 {strategy.groundingUrls.map((url, i) => (
-                   <li key={i}>
-                     <a 
-                      href={url.uri} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 hover:underline text-sm truncate transition-colors"
-                     >
-                       <LinkIcon className="w-3 h-3 flex-shrink-0" />
-                       {url.title || url.uri}
-                     </a>
-                   </li>
-                 ))}
-               </ul>
+          {error && (
+            <div className="p-4 bg-red-950/30 border border-red-900/50 text-red-400 text-sm flex items-center gap-3">
+              <AlertTriangle className="w-4 h-4" />
+              {error}
             </div>
           )}
         </div>
-      )}
+
+        {/* Blueprint Output */}
+        <div className="lg:col-span-2">
+          {strategy ? (
+            <div className="bg-slate-900 border border-slate-800 min-h-[500px] relative overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-700 flex flex-col">
+              {/* Header of Blueprint */}
+              <div className="bg-slate-950/50 p-6 border-b border-slate-800 flex justify-between items-center">
+                 <div>
+                    <h3 className="text-xl font-display font-bold text-white tracking-tight">{strategy.title}</h3>
+                    <div className="flex items-center gap-2 mt-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <p className="text-emerald-500 text-xs font-mono uppercase tracking-wider">Status: Ottimizzato</p>
+                    </div>
+                 </div>
+                 <Ruler className="text-slate-700 w-6 h-6" />
+              </div>
+              
+              <div className="p-8 prose prose-invert prose-emerald max-w-none prose-headings:font-display prose-headings:font-bold prose-h1:text-2xl prose-h2:text-lg prose-h2:text-emerald-400 prose-p:text-slate-300 prose-li:text-slate-300 font-sans text-sm leading-7 flex-grow">
+                 <ReactMarkdown>
+                   {strategy.content}
+                 </ReactMarkdown>
+              </div>
+
+              {/* Footer of Blueprint */}
+              {strategy.groundingUrls && strategy.groundingUrls.length > 0 && (
+                <div className="bg-slate-950 p-6 border-t border-slate-800">
+                   <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Risorse Validate</h4>
+                   <ul className="flex flex-wrap gap-3">
+                     {strategy.groundingUrls.map((url, i) => (
+                       <li key={i}>
+                         <a 
+                          href={url.uri} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-emerald-500/50 text-emerald-400 hover:text-emerald-300 text-xs transition-colors"
+                         >
+                           <LinkIcon className="w-3 h-3" />
+                           {url.title || "Link Esterno"}
+                         </a>
+                       </li>
+                     ))}
+                   </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="h-full border border-dashed border-slate-800 bg-slate-900/30 flex flex-col items-center justify-center text-center p-12">
+               <div className="w-16 h-16 border border-slate-700 rounded-full flex items-center justify-center mb-4">
+                 <Ruler className="w-6 h-6 text-slate-600" />
+               </div>
+               <h3 className="text-white font-display text-lg mb-2">In attesa di parametri</h3>
+               <p className="text-slate-500 text-sm max-w-xs">Inserisci il tuo target e le tue competenze nel pannello laterale per generare il progetto.</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

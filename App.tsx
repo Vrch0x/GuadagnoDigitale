@@ -4,7 +4,7 @@ import { Calculator } from './components/Calculator';
 import { StrategyAdvisor } from './components/StrategyAdvisor';
 import { ResourceList } from './components/ResourceList';
 import { ViewState } from './types';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronRight, Layers } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
@@ -20,76 +20,89 @@ export default function App() {
       case ViewState.HOME:
       default:
         return (
-          <div className="max-w-4xl mx-auto text-center space-y-12 py-12 animate-in fade-in duration-700">
-            <div className="space-y-6">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <div className="max-w-6xl mx-auto text-center space-y-20 py-16 animate-in fade-in duration-700">
+            {/* Hero */}
+            <div className="space-y-8 relative">
+               {/* Decorative Element */}
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+               
+              <div className="inline-flex items-center gap-3 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full">
+                <span className="flex h-2 w-2 relative">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                Strategie Online 2024
-              </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
-                Guadagna <span className="text-emerald-400">10€/ora</span><br />
-                o <span className="text-emerald-400">240€/giorno</span>
+                <span className="text-slate-400 text-xs font-mono uppercase tracking-widest">Protocollo 24h Attivo</span>
+              </div>
+              
+              <h1 className="text-5xl md:text-8xl font-display font-bold tracking-tight text-white leading-tight">
+                Costruisci il tuo<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-600">Impero Digitale</span>
               </h1>
-              <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-                La guida definitiva per monetizzare le tue competenze online in Italia. 
-                Niente trucchi, solo metodi reali supportati dall'Intelligenza Artificiale.
+              
+              <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+                Obiettivo: <strong className="text-white font-medium">10€/ora per 24 ore</strong> (240€/giorno).<br/>
+                La piattaforma VirtualArchitects utilizza l'AI per progettare la tua strategia finanziaria su misura.
               </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                 <button 
+                  onClick={() => setCurrentView(ViewState.STRATEGY)}
+                  className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold font-display uppercase tracking-wider text-sm transition-all hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center gap-2"
+                 >
+                   Genera Blueprint <ArrowRight className="w-4 h-4" />
+                 </button>
+                 <button 
+                  onClick={() => setCurrentView(ViewState.CALCULATOR)}
+                  className="px-8 py-4 bg-transparent border border-slate-700 hover:border-white text-white font-bold font-display uppercase tracking-wider text-sm transition-all flex items-center gap-2"
+                 >
+                   Simula Reddito
+                 </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            {/* Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-800 border border-slate-800">
               <div 
                 onClick={() => setCurrentView(ViewState.STRATEGY)}
-                className="group cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-emerald-500/50 transition-all hover:shadow-lg hover:shadow-emerald-500/10"
+                className="group cursor-pointer bg-[#020617] p-10 hover:bg-slate-900 transition-colors relative overflow-hidden"
               >
-                <div className="h-12 w-12 bg-emerald-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Layers className="w-24 h-24 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Piano Personalizzato</h3>
-                <p className="text-slate-400 mb-4">Usa l'AI per creare una strategia su misura per le tue skills.</p>
-                <div className="flex items-center text-emerald-400 text-sm font-medium">
-                  Inizia ora <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <h3 className="text-2xl font-display font-bold text-white mb-2">Blueprint AI</h3>
+                <p className="text-slate-500 text-sm leading-6 mb-6">Algoritmi generativi per creare piani d'azione dettagliati basati sulle tue skill attuali.</p>
+                <div className="flex items-center text-emerald-500 text-xs font-bold uppercase tracking-widest">
+                  Accesso <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
               <div 
                 onClick={() => setCurrentView(ViewState.CALCULATOR)}
-                className="group cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10"
+                className="group cursor-pointer bg-[#020617] p-10 hover:bg-slate-900 transition-colors relative overflow-hidden"
               >
-                 <div className="h-12 w-12 bg-blue-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <CheckCircle2 className="w-6 h-6 text-blue-400" />
+                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Layers className="w-24 h-24 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Calcola Obiettivi</h3>
-                <p className="text-slate-400 mb-4">Visualizza quante ore o progetti ti servono per raggiungere i 240€.</p>
-                <div className="flex items-center text-blue-400 text-sm font-medium">
-                  Simula <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <h3 className="text-2xl font-display font-bold text-white mb-2">Simulatore</h3>
+                <p className="text-slate-500 text-sm leading-6 mb-6">Calcola proiezioni di reddito passivo vs attivo. 10€/h x 24h = Libertà Finanziaria.</p>
+                <div className="flex items-center text-blue-500 text-xs font-bold uppercase tracking-widest">
+                  Configura <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
               <div 
                 onClick={() => setCurrentView(ViewState.RESOURCES)}
-                className="group cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-purple-500/50 transition-all hover:shadow-lg hover:shadow-purple-500/10"
+                className="group cursor-pointer bg-[#020617] p-10 hover:bg-slate-900 transition-colors relative overflow-hidden"
               >
-                 <div className="h-12 w-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <CheckCircle2 className="w-6 h-6 text-purple-400" />
+                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Layers className="w-24 h-24 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Piattaforme Reali</h3>
-                <p className="text-slate-400 mb-4">Lista curata dei migliori siti per trovare lavoro online in Italia.</p>
-                <div className="flex items-center text-purple-400 text-sm font-medium">
-                  Esplora <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <h3 className="text-2xl font-display font-bold text-white mb-2">Strumenti</h3>
+                <p className="text-slate-500 text-sm leading-6 mb-6">Accesso diretto alle piattaforme di mercato verificate per l'ecosistema italiano.</p>
+                <div className="flex items-center text-purple-500 text-xs font-bold uppercase tracking-widest">
+                  Esplora <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </div>
-
-            <div className="pt-8">
-               <button 
-                onClick={() => setCurrentView(ViewState.STRATEGY)}
-                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-full shadow-lg shadow-emerald-500/20 transition-all transform hover:scale-105"
-               >
-                 Voglio Guadagnare 240€ al Giorno
-               </button>
             </div>
           </div>
         );
@@ -97,21 +110,28 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-50 font-sans selection:bg-emerald-500/30">
-      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-[#020617] text-slate-50 font-sans selection:bg-emerald-500/30 overflow-x-hidden">
+      <div className="fixed inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none z-0"></div>
       
-      {/* Background Orbs */}
-      <div className="fixed top-20 left-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="fixed bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-
       <Header currentView={currentView} setView={setCurrentView} />
       
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {renderContent()}
       </main>
 
-      <footer className="relative z-10 py-8 text-center text-slate-600 text-sm border-t border-slate-800/50 mt-12">
-        <p>© 2024 Guadagno Digitale Italia. Disclaimer: I guadagni non sono garantiti. Questo strumento è solo a scopo informativo.</p>
+      <footer className="relative z-10 py-12 border-t border-slate-800 bg-[#020617]">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+                 <div className="w-6 h-6 bg-slate-900 border border-slate-700 flex items-center justify-center">
+                  <span className="font-display font-bold text-emerald-500 text-xs">V</span>
+                </div>
+                <span className="font-display font-bold text-white text-lg">VirtualArchitects</span>
+            </div>
+            <p className="text-slate-600 text-xs uppercase tracking-widest">Designed by VirtualArchitects © 2024</p>
+            <p className="text-slate-700 text-[10px] mt-2 max-w-md mx-auto">
+                Disclaimer: Le proiezioni finanziarie sono stime basate su AI. Questo strumento non costituisce consulenza finanziaria legale o fiscale.
+            </p>
+        </div>
       </footer>
     </div>
   );
